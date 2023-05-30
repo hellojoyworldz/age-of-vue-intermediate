@@ -8,10 +8,10 @@
           class="shadow"
         >
           <i class="checkBtn fa fa-check" 
-              v-bind:class="{checkBtnCompleted : todoItem.completed}" 
+              v-bind:class="{checkBtnCompleted: todoItem.completed}" 
               v-on:click="toggleComplete(todoItem, index)"
           ></i>
-          <span v-bind:class="{textCompleted : todoItem.completed}">{{ todoItem.item }}</span>
+          <span v-bind:class="{textCompleted: todoItem.completed}">{{ todoItem.item }}</span>
           <span class="removeBtn" v-on:click="removeTodo(todoItem, index)">
             <i class="fa fa-trash" aria-hidden="true"></i>
           </span>
@@ -49,8 +49,7 @@
         for (var i = 0; i < localStorage.length; i++) {
           if (localStorage.key(i) !== "loglevel:webpack-dev-server") {
             this.todoItems.push(JSON.parse(localStorage.getItem(localStorage.key(i)))) // type of localStorage.key(i) 는 string
-            this.todoItems.push(localStorage.key(i));
-           
+            //this.todoItems.push(localStorage.key(i));
           }
         }
       }
