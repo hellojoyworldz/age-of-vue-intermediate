@@ -3,12 +3,15 @@
       <ul>
         <!-- v-bind:key="중복되지 않을 유일한 값을 key로" -> v-for의 성능을 가속화 -->
         <li
-          v-for="(todoItem,index) in todoItems"
+          v-for="(todoItem,index) in propsdata"
           v-bind:key="todoItem"
           class="shadow"
         >
-          <i class="checkBtn fas fa-check"></i>
-          {{ todoItem }}
+          <i class="checkBtn fa fa-check" 
+              v-bind:class="{checkBtnCompleted: todoItem.completed}" 
+              v-on:click="toggleComplete(todoItem, index)"
+          ></i>
+          <span v-bind:class="{textCompleted: todoItem.completed}">{{ todoItem.item }}</span>
           <span class="removeBtn" v-on:click="removeTodo(todoItem, index)">
             <i class="fa fa-trash" aria-hidden="true"></i>
           </span>
@@ -19,32 +22,16 @@
   
   <script>
   export default {
-    data: function() {
-      return {
-        todoItems: []
-      };
-    },
+    props: ['propsdata'],
     methods: {
       removeTodo: function(todoItem, index) {
-        localStorage.removeItem(todoItem) // key를 지움
-        this.todoItems.splice(index, 1) // 새로운 배열을 반환
-        //MDN splice() API 문서 - 자바스크립트 배열 api. 특정 인덱스에서 하나를 지울 수 있다
-        //https://developer.mozilla.org/ko/docs/Web/JavaScript/Reference/Global_Objects/Array/splice
+        this.$emit('removeItem',todoItem, index)
+      },
+      toggleComplete:function(todoItem,index){
+        this.$emit('toggleItem',todoItem, index)
       }
     },
-    // vue 라이프사이클
-    created: function() {
-      // 인스턴스가 생성되자마자 호출되는 라이프사이클 훅
-      // 훅 : 생성되는 시점에 안에 로직이 호출된다.
-      if (localStorage.length > 0) {
-        for (var i = 0; i < localStorage.length; i++) {
-          if (localStorage.key(i) !== "loglevel:webpack-dev-server") {
-            this.todoItems.push(localStorage.key(i));
-            //console.log(localStorage.key(i));
-          }
-        }
-      }
-    }
+ 
   };
   </script>
   

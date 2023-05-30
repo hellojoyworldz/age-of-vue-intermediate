@@ -1,9 +1,9 @@
 <template>
   <div>
     <TodoHeader></TodoHeader>
-    <TodoInput></TodoInput>
-    <TodoList></TodoList>
-    <TodoFooter></TodoFooter>
+    <TodoInput v-on:addTodoItem="addOneItem"></TodoInput>
+    <TodoList v-bind:propsdata="todoItems" v-on:removeItem="removeOneItem" v-on:toggleItem="toggleOneItem"></TodoList>
+    <TodoFooter v-on:cleanAll="cleanAllItems"></TodoFooter>
   </div>
 </template>
 
@@ -14,8 +14,45 @@ import TodoList from "./components/TodoList.vue";
 import TodoFooter from "./components/TodoFooter.vue";
 
 export default {
-  components: {
-    // 컴포넌트 태그명(todo-header 권장) : 컴포넌트 내용 (TodoHeader 권장)
+  // 각각의 컴포넌트에서 처리하던 데이터 로직들을 끌어온다
+  data: function(){
+    return{
+      todoItems:[]
+    }
+  },
+  methods: {
+    addOneItem: function(todoItem){
+      var obj = {completed:false, item:todoItem}
+      localStorage.setItem(todoItem, JSON.stringify(obj))
+      this.todoItems.push(obj)
+    },
+    removeOneItem : function(todoItem,index){
+      localStorage.removeItem(todoItem.item) 
+      this.todoItems.splice(index, 1)
+    },
+    toggleOneItem: function(todoItem, index){
+      // 컴포넌트간의 관계를 좀 더 명확하게 한다
+      //todoItem.completed = !todoItem.completed
+      this.todoItems[index].completed = !this.todoItems[index].completed
+      
+      localStorage.removeItem(todoItem.item)
+      localStorage.setItem(todoItem.item, JSON.stringify(todoItem))
+    },
+    cleanAllItems: function(){
+      localStorage.clear()
+      this.todoItems = []
+    }
+  },
+  created: function() {
+    if (localStorage.length > 0) {
+      for (var i = 0; i < localStorage.length; i++) {
+        if (localStorage.key(i) !== "loglevel:webpack-dev-server") {
+          this.todoItems.push(JSON.parse(localStorage.getItem(localStorage.key(i))))
+        }
+      }
+    }
+  }
+  ,components: {
     TodoHeader: TodoHeader,
     TodoInput: TodoInput,
     TodoList: TodoList,
