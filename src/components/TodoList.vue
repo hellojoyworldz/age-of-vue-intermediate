@@ -1,84 +1,69 @@
 <template>
-    <div>
-      <ul>
-        <!-- v-bind:key="중복되지 않을 유일한 값을 key로" -> v-for의 성능을 가속화 -->
-        <li
-          v-for="(todoItem,index) in propsdata"
-          v-bind:key="todoItem"
-          class="shadow"
-        >
-          <i class="checkBtn fa fa-check" 
-              v-bind:class="{checkBtnCompleted: todoItem.completed}" 
-              v-on:click="toggleComplete(todoItem, index)"
-          ></i>
-          <span v-bind:class="{textCompleted: todoItem.completed}">{{ todoItem.item }}</span>
-          <span class="removeBtn" v-on:click="removeTodo(todoItem, index)">
-            <i class="fa fa-trash" aria-hidden="true"></i>
-          </span>
-        </li>
-      </ul>
-    </div>
-  </template>
-  
-  <script>
-  export default {
-    props: ['propsdata'],
-    methods: {
-      removeTodo: function(todoItem, index) {
-        this.$emit('removeItem',todoItem, index)
-      },
-      toggleComplete:function(todoItem,index){
-        this.$emit('toggleItem',todoItem, index)
-      }
-    },
- 
-  };
-  </script>
-  
-  <style scoped>
-  ul {
-    list-style-type: none;
-    padding-left: 0px;
-    margin-top: 0px;
-    text-align: left;
+  <div>
+    <ul>
+      <li class="shadow">
+        <i class="checkBtn fa fa-check checkBtnCompleted"  ></i>
+        <span class="textCompleted"></span>
+        <span class="removeBtn" >
+          <i class="fa fa-trash" aria-hidden="true"></i>
+        </span>
+      </li>
+    </ul>
+  </div>
+</template>
+
+<script>
+export default {
+  props : ['propsdata'],
+  method : {
+
   }
-  li {
-    display: flex;
-    min-height: 50px;
-    height: 50px;
-    line-height: 50px;
-    margin: 0.5rem 0;
-    padding: 0 0.9rem;
-    background: #fff;
-    border-radius: 5px;
-  }
-  .checkBtn {
-    line-height: 45px;
-    color: #62acde;
-    margin-right: 5px;
-  }
-  .checkBtnCompleted {
-    color: #b3adad;
-  }
-  .textCompleted {
-    text-decoration: line-through;
-    color: #b3adad;
-  }
-  .removeBtn {
-    margin-left: auto;
-    color: #de4343;
-  }
-  .checkBtn{
+}
+</script>
+
+<style scoped>
+ul {
+  list-style-type: none;
+  padding-left: 0px;
+  margin-top: 0px;
+  text-align: left;
+}
+li {
+  display: flex;
+  min-height: 50px;
+  height: 50px;
+  line-height: 50px;
+  margin: 0.5rem 0;
+  padding: 0 0.9rem;
+  background: #fff;
+  border-radius: 5px;
+}
+.checkBtn {
   line-height: 45px;
-  color:#62acde;
+  color: #62acde;
   margin-right: 5px;
-  }
-  .checkBtnCompleted{
-    color:#b3adad
-  }
-  .textCompleted{
-    text-decoration:line-througth;
-    color:#b3adad;
-  }
-  </style>
-  
+}
+.checkBtnCompleted {
+  color: #b3adad;
+}
+.textCompleted {
+  text-decoration: line-through;
+  color: #b3adad;
+}
+.removeBtn {
+  margin-left: auto;
+  color: #de4343;
+}
+.checkBtn{
+line-height: 45px;
+color:#62acde;
+margin-right: 5px;
+}
+.checkBtnCompleted{
+  color:#b3adad
+}
+.textCompleted{
+  text-decoration:line-througth;
+  color:#b3adad;
+}
+</style>
