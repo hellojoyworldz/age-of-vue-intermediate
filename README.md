@@ -1,139 +1,64 @@
-# ES6 fot Vue.js
+# Vuex
+- 컴포넌트 데이터를 관리하기 위한 상태 관리 패턴이자 랄이ㅡ러리
+- 리엑트 Flux 패턴에서 기인함
 
-- const & let  
-- Arrow Function  
-- Enhanced Object Literals  
-- Modules
+## Flux란?
+MVC 패턴의 복잡한 데이터 흐름 문제를 해결하는 개발 패턴    
+Action -> Dispatcher -> Model -> View  
+(데이터가 한방향으로 움직인다)
+1. action : 사용자 입력 , 화면에서 발생하는 이벤트
+2. dispatcher : 모델을 가꾸기 위한 역할. 데이터를 변경하는 방법, 메서드
+3. model : 데이터. 화면에 표시할 데이터
+4. view : 화면. 사용자에게 비춰지는 화면
 
-## ES6 란?
-ECMAScript 2015와 동일한 용어
-ES5(2009년) 이래로 첫 메이저 업데이트가 승인된 해
-Vue에서 권고하는 언어 형식
+## MVC 패턴과 Flux 패턴 비교
+1. MVC 패턴 - 양방향
+Controller(모델과 뷰를 제어) -> Model(데이터) -> <- View(화면)
 
-## Babel
-https://babeljs.io/  
-ES6는 모든 브라우저에서 지원되지 않으므로 transpiling 필요  
-ES6 -> ES5 변환하는 컴파일러
+2. Flux 패턴 - 단방향
+Action -> Dispatcher -> Model -> View 
 
-## const & let
+### MVC 패턴의 문제점  
+ex) 페이스북 채팅 화면  
+![이미지](./readme-img/%EC%8A%A4%ED%81%AC%EB%A6%B0%EC%83%B7%202023-06-07%20%EC%98%A4%EC%A0%84%206.23.39.png)
+- Model View 사이의 방향을 예측할 수 없음  
+- 데이터의 흐름을 추적할 수 없음  
+- 기능의 추가 및 변경에 따라 생기는 문제접을 예측할 수 없음
 
-자바스크립트가 가지고있는 유연함 = 모호한 부분  
-새로운 문법을 개정하면서 오류들을 방지  
-{}블록 단위로 변수의 범위가 제한되었음
-const : 상수 개념. 한번 선언한 값에 대해서 변경할 수 없음  
-let : 한번 선언한 값에 대해서 다시 선언할 수 없음
+### Flux 패턴의 단방향 데이터 흐름
+![이미지](./readme-img/스크린샷%202023-06-07%20오전%206.25.20.png)
 
-## hoisting
+데이터의 흐름이 여러 갈래로 나뉘지 않고 단방향으로 처리  
+View -> Action -> Dispatcher
 
-ES5 특징 - hoisting  
-함수선언식과 변수는 메모리 공간을 먼저 확보한다  
-그 다음에 연산이 일어난다  
-최상단으로 끌어 올려진 것처럼 보인다
+## Vuex가 왜 필요할까?  
+![이미지](./readme-img/스크린샷%202023-06-07%20오전%206.26.45.png)
+복잡한 애플리케이션에서 컴포넌트의 개수가 많아지면 컴포넌트 간에 데이터 전달이 어려워진다.
+- 이벤트 버스를 사용하면? 어디서 이벤트를 보냈는지 혹은 어디서 이벤트를 받았는지 알기 어려움. 컴포넌트 간 데이터 전달이 명시적이지 않음.
+  
+## Vuex로 해결할 수 있는 문제
+- MVC 패턴에서 발생하는 구조적 오류
+- 컴포넌트 간 데이터 전달 명시 (뷰 개발자 도구로 확인)
+- 여러 개의 컴포넌트에서 같은 데이터를 업데이트 할 때 동기화 문제
 
-```javascript
-function sum() {
-  // function statement 함수선언문
-  return 10 + 20;
-}
+## Vuex 컨셉
+![이미지](readme-img/스크린샷%202023-06-07%20오전%206.32.24.png)
+단방향 데이터 흐름
+- State: 컴포넌트 간에 공유하는 데이터. data()
+- View: 데이터를 표시하는 화면. template
+- Action: 사용자의 입력에 따라 데이터를 변경. methods
 
-var sum = function () {
-  // functino expression 함수표현식
-  return 10 + 20;
-};
-```
+## Vuex 구조
+![이미지](readme-img/스크린샷%202023-06-07%20오전%206.34.40.png)
+컴포넌트 -> 비동기 로직 -> 동기 로직 -> 상태
 
-```javascript
-var sum = 5;
-sum = sum + i;
-function sumAllNumbers() {
-  // ...
-}
-var i = 10;
-```
+[자바스크립트 비동기 처리와 콜백 함수 글 링크(클릭)](https://joshua1988.github.io/web-development/javascript/javascript-asynchronous-operation/)  
+[ 자바스크립트 Promise 쉽게 이해하기 글 링크(클릭)](https://joshua1988.github.io/web-development/javascript/promise-for-beginners/)  
 
-```javascript
-var sum;
-function sumAllNumbers() {
-  // ...
-}
-var i;
+## 개요
+- 복잡한 애플리케이션의 컴포넌트들을 효율적으로 관리하는 Vuex 라이브러리
+- Flux 패턴
+- state, getters, mutaions, actions
+- Helper 기능
+- 구조화 방법
 
-sum = 5;
-sum = sum + i;
-i = 10;
-```
-
-## Arrow Function - 화살표 함수
-- function 이라는 키워드를 사용하지 않고 => 로 대체
-- 콜백 함수의 문법을 간결화
-```javascript
-// ES5 함수 정의 방식
-var arr = ["a","b","c"];
-arr.forEach(function(value){
-    console.log(value)
-})
-
-// ES6
-arr.forEach(value => console.log(value))
-```
-
-## Enhanced Object Literals - 향상된 객체 리터럴
-- 객체의 속성을 메서드로 사용할 때 function 예약어 생략
-```javascript
-var dictionary = {
-    words: 100,
-    // ES5
-    lookup: function(){
-        console.log("find words")
-    },
-    // ES6
-    lookup(){
-        console.log("find words")
-    }
-}
-```
-- 객체의 속성명과 값이 동일할 때 아래와 같이 축약 가능
-```javascript
-var figures = 10;
-var dictionary = {
-    figures
-    // figures: figures
-}
-```
-
-## Modules - 자바스크립트 모듈화 방법
-- 자바스크립트 모듈 로더 라이브러리(AMD, Commons JS) 기능을 js언어 자체에서 지원(모듈 : 특정 기능을 수행하는 묶음, 재사용성)
-- 호출되기 전까지는 코드 실행과 동작을 하지 않는 특징이 있음
-```javascript
-// libs/math.js
-export function sum(x,y){
-    return x+y
-}
-export var pi = 3.141593;
-
-// main.js
-import {sum} from 'libs/math.js';
-sum(1,2);
-```
-
-## Vue.js 에서 마주칠 default export
-- 인캡슐레이션 
-- 익명으로 하게되면 이름을 부여해서 사용할 수 있다
-
-```javascript
-// util.js
-export default function(x){
-    return console.log(x)
-}
-
-// main.js
-import util from 'util.js'
-console.log(util); // function(x) { return console.log(x)}
-util("hi")
-
-// app.js
-import log from 'util.js'
-console.log(log)
-log("hi")
-
-```
