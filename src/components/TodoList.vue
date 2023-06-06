@@ -23,11 +23,11 @@
   <script>
   export default {
     props: ['propsdata'],
-    methods: {
-      removeTodo: function(todoItem, index) {
+    methods:{
+      removeTodo(todoItem, index) {
         this.$emit('removeItem',todoItem, index)
       },
-      toggleComplete:function(todoItem,index){
+      toggleComplet(todoItem,index){
         this.$emit('toggleItem',todoItem, index)
       }
     },

@@ -9,19 +9,19 @@
   
   <script>
   export default {
-    data: function () {
+    data() {
       return {
         newTodoItem: "",
       };
     },
     methods: {
-      addTodo: function () {
+      addTodo() {
         if(this.newTodoItem !== ''){
           this.$emit('addTodoItem',this.newTodoItem)
           this.clearInput();
         }
       },
-      clearInput: function () {
+      clearInput() {
         this.newTodoItem = "";
       },
     },
