@@ -1,5 +1,6 @@
 # Vuex
 - 컴포넌트 데이터를 관리하기 위한 상태 관리 패턴이자 라이브러리
+- 복잡한 애플리케이션의 컴포넌트들을 효율적으로 관리하는 Vuex 라이브러리
 - 리엑트 Flux 패턴에서 기인함
 
 ## Flux란?
@@ -55,10 +56,74 @@ View -> Action -> Dispatcher
 [자바스크립트 비동기 처리와 콜백 함수 글 링크(클릭)](https://joshua1988.github.io/web-development/javascript/javascript-asynchronous-operation/)  
 [ 자바스크립트 Promise 쉽게 이해하기 글 링크(클릭)](https://joshua1988.github.io/web-development/javascript/promise-for-beginners/)  
 
-## 개요
-- 복잡한 애플리케이션의 컴포넌트들을 효율적으로 관리하는 Vuex 라이브러리
-- Flux 패턴
-- state, getters, mutaions, actions
-- Helper 기능
-- 구조화 방법
+## Vuex 설치
+(2022년 2월 7일부터 Vuex 라이브러리를 설치할 때 아래와 같이 라이브러리 버전을 명시)
+`npm i vuex@3.6.2`  
 
+- Vuex는 싱글 파일 컴포넌트 체계에서 NPM 방식으로 라이브러리를 설치하는 게 좋다.
+- ES6와 함께 사용해야 더 많은 기능과 이점을 제공받을 수 있음
+- [라이브러리 버전과 공식 문서 주소 변경](https://joshua1988.github.io/web-development/vuejs/vue3-as-default/)
+
+## Vuex 등록
+(Vuex 를 store 라고 부른다)  
+`/src/store/store.js`
+```
+import Vue from "vue";
+import Vuex from "vuex";
+
+Vue.use(Vuex); 
+
+export const store = new Vue.Store({
+
+});
+
+```
+
+## Vuex 기술요소
+- state: 여러 컴포넌트에 공유되는 데이터 `data`
+- getters: 연산된 state 값을 접근하는 속성 `computed`
+- mutations: state 값을 변경하는 이벤트 로직. 메서드 `methods`
+- actions: 비동기 처리 로직을 선언하는 메서드 `aysnc methods`
+
+### state란?
+여러 컴포넌트 간에 공유할 데이터 - 상태
+```javascript
+// vue
+data: {
+    message: 'Hello Vue.js!'
+}
+
+//vuex
+state: {
+    message: 'Hello Vue.js!'
+}
+```
+```javascript
+// vue
+<p>{{ message }}</p>
+
+//vuex 
+<p>{{ this.$store.state.message }}</p>
+```
+
+## getters란?
+state 값을 접근하는 속성이자 computed()처럼 미리 연산된 값을 접근하는 속성
+```javascript
+// store.js
+state: {
+    num: 10
+},
+getters: {
+    getNumber(state){
+        return state.num
+    },
+    doubleNumber(state){
+        return state.num * 2
+    }
+}
+
+```
+```javascript
+<p>{{ this.$store.getters.getNumver }}</p>
+<p>{{ this.$store.getters.doubleNumber }}</p>
+```
