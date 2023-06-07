@@ -1,7 +1,7 @@
 <template>
   <div class="inputBox shadow">
-    <input type="text" v-model="newTodoItem"/>
-    <span class="addContainer" >
+    <input type="text" v-model="newTodoItem" v-on:keyup.enter="addTodo"/>
+    <span class="addContainer" v-on:click="addTodo">
       <i class="fa fa-plus" aria-hidden="true"></i>
     </span>
   </div>
@@ -9,13 +9,21 @@
 
 <script>
 export default {
-  data : function(){
+  data(){
     return{
       newTodoItem:''
     }
   },
   methods : {
-
+    addTodo(){
+      if(this.newTodoItem !==''){
+        this.$emit('addTodoItem', this.newTodoItem)
+        this.clearInput();
+      }
+    },
+    clearInput(){
+      this.newTodoItem=''
+    }
   }
 }
 </script>

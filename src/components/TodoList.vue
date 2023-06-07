@@ -1,10 +1,10 @@
 <template>
   <div>
     <ul>
-      <li class="shadow">
-        <i class="checkBtn fa fa-check checkBtnCompleted"  ></i>
-        <span class="textCompleted"></span>
-        <span class="removeBtn" >
+      <li v-for="(todoItem, index) in propsdata" v-bind:key="todoItem.item" class="shadow">
+        <i class="checkBtn fa fa-check" v-bind:class="{checkBtnCompleted: todoItem.completed}" v-on:click="toggleComplet(todoItem, index)" ></i>
+        <span v-bind:class="{textCompleted: todoItem.completed}">{{ todoItem.item }}</span>
+        <span class="removeBtn" v-on:click="removeTodo(todoItem, index)">
           <i class="fa fa-trash" aria-hidden="true"></i>
         </span>
       </li>
@@ -15,8 +15,13 @@
 <script>
 export default {
   props : ['propsdata'],
-  method : {
-
+  methods : {
+    removeTodo(todoItem, index){
+      this.$emit('removeItem', todoItem, index)
+    },
+    toggleComplet(todoItem, index){
+      this.$emit('toggleItem', todoItem, index)
+    }
   }
 }
 </script>

@@ -1,13 +1,16 @@
 <template>
   <div class="clearAllContainer">
-    <span class="clearAllBtn">Clear All</span>
+    <span class="clearAllBtn" v-on:click="cleanTodo">Clear All</span>
   </div>
 </template>
 
 <script>
 export default {
-
-
+  methods:{
+    cleanTodo(){
+      this.$emit('cleanAll')
+    }
+  }
 }
 </script>
 
