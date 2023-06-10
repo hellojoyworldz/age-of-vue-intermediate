@@ -12,9 +12,7 @@ const storage = {
     if (localStorage.length > 0) {
       for (let i = 0; i < localStorage.length; i++) {
         if (localStorage.key(i) !== "loglevel:webpack-dev-server") {
-          this.todoItems.push(
-            arr.parse(localStorage.getItem(localStorage.key(i)))
-          );
+          arr.push(JSON.parse(localStorage.getItem(localStorage.key(i))));
         }
       }
     }
@@ -25,6 +23,31 @@ const storage = {
 export const store = new Vuex.Store({
   // export const 변수 다른곳에서 사용 가능
   state: {
-    todoItems: storage.fetch(),
+    todoItems: storage.fetch(), //this.$store.state.todoItems
+  },
+  mutations: {
+    // method
+    addOneItem(state, todoItem) {
+      const obj = { completed: false, item: todoItem };
+      localStorage.setItem(todoItem, JSON.stringify(obj));
+      state.todoItems.push(obj); //this X, state O
+    },
+    removeOneItem(state, payload) {
+      localStorage.removeItem(payload.todoItem.item);
+      state.todoItems.splice(payload.index, 1);
+    },
+    toggleOneItem(state, payload) {
+      state.todoItems[payload.index].completed =
+        !state.todoItems[payload.index].completed;
+      localStorage.removeItem(payload.todoItem.item);
+      localStorage.setItem(
+        payload.todoItem.item,
+        JSON.stringify(payload.todoItem)
+      );
+    },
+    cleanAll(state) {
+      localStorage.clear();
+      state.todoItems = [];
+    },
   },
 });
