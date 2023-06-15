@@ -256,6 +256,29 @@ methods:{
         this.$store.dispatch('delayedAddCounter')
     }
 }
-
-
 ```
+```javascript
+// store.js
+mutations:{
+    setData(state, fetchedData){
+        state.product = fetchedData
+    }
+},
+actions:{
+    fetchProductData(context){
+        return axios.get('https://domain.com/products/1')
+                    .then(response => context.commit('setData',response))
+    }
+}
+
+//App.vue
+methods:{
+    getProduct(){
+        this.$store.dispatch('fetchProductData')
+    }
+}
+```
+### 왜 비동기 처리 로직은 actions에 선언해야 할까?
+- 언제 어느 컴포넌트에서 해당 state를 호출하고 변경했는지 확인이 어려움
+- state 값의 변화를 추적하기 어렵기 때문에 mutations 속성에는 동기 처리 로직만 넣어야 한다
+![이미지](./readme-img/%EC%8A%A4%ED%81%AC%EB%A6%B0%EC%83%B7%202023-06-10%20%EC%98%A4%ED%9B%84%208.42.10.png)
