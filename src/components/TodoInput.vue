@@ -4,14 +4,25 @@
     <span class="addContainer" v-on:click="addTodo">
       <i class="fa fa-plus" aria-hidden="true"></i>
     </span>
+
+    <AlertModal v-if="showModal" @close="showModal = false">
+      <!-- slot : 컴포넌트의 특정 부분(일부 UI)을 재정의할 수 있다 -->
+      <h3 slot="header">
+        경고!
+        <i class="closeModalBtn fa fa-times" @click="showModal = false"></i>
+      </h3>
+      <p slot="body">바디</p>
+    </AlertModal>
   </div>
 </template>
 
 <script>
+import AlertModal from './common/AlertModal.vue'
 export default {
   data(){
     return{
-      newTodoItem:''
+      newTodoItem:'',
+      showModal: false
     }
   },
   methods : {
@@ -19,11 +30,16 @@ export default {
       if(this.newTodoItem !==''){
         this.$emit('addTodoItem', this.newTodoItem)
         this.clearInput();
+      }else{
+        this.showModal = !this.showModal
       }
     },
     clearInput(){
       this.newTodoItem=''
     }
+  },
+  components:{
+    "AlertModal": AlertModal,
   }
 }
 </script>
@@ -49,5 +65,8 @@ export default {
 .addBtn {
   color: white;
   vertical-align: middle;
+}
+.closeModalBtn{
+  color: #42b983
 }
 </style>
