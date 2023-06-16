@@ -2,10 +2,10 @@
     <div>
       <ul>
         <!-- v-bind:key="중복되지 않을 유일한 값을 key로" -> v-for의 성능을 가속화 -->
-        <li v-for="(todoItem,index) in this.$store.state.todoItems" v-bind:key="todoItem.item" class="shadow">
-          <i class="checkBtn fa fa-check" v-bind:class="{checkBtnCompleted: todoItem.completed}" v-on:click="toggleComplete(todoItem, index)"></i>
+        <li v-for="(todoItem,index) in this.storedTodoItems" v-bind:key="todoItem.item" class="shadow">
+          <i class="checkBtn fa fa-check" v-bind:class="{checkBtnCompleted: todoItem.completed}" v-on:click="toggleComplete({todoItem, index})"></i>
           <span v-bind:class="{textCompleted: todoItem.completed}">{{ todoItem.item }}</span>
-          <span class="removeBtn" v-on:click="removeTodo(todoItem, index)">
+          <span class="removeBtn" v-on:click="removeTodo({todoItem, index})">
             <i class="fa fa-trash" aria-hidden="true"></i>
           </span>
         </li>
@@ -14,21 +14,31 @@
   </template>
   
   <script>
+  import { mapGetters, mapMutations } from 'vuex'
+
   export default {
     methods:{
-      removeTodo(todoItem, index) {
-        //this.$emit('removeItem',todoItem, index)
-        this.$store.commit('removeOneItem', {todoItem, index})
-      },
-      toggleComplete(todoItem,index){
-        //this.$emit('toggleItem',todoItem, index)
-        const obj = {
-          todoItem,
-          index
-        }
-        this.$store.commit('toggleOneItem',obj)
-      }
+      ...mapMutations({
+        removeTodo: 'removeOneItem', // 암묵적으로 넘긴다 {todoItem, index}
+        toggleComplete: 'toggleOneItem'
+      }),
+      // removeTodo(todoItem, index) {
+      //   this.$store.commit('removeOneItem', {todoItem, index})
+      // },
+      // toggleComplete(todoItem,index){
+      //   const obj = {
+      //     todoItem,
+      //     index
+      //   }
+      //   this.$store.commit('toggleOneItem',obj)
+      // }
     },
+    computed:{
+      // todoItems(){
+      //   return this.$store.getters.storedTodoItems
+      // },
+      ...mapGetters(['storedTodoItems'])
+    }
  
   };
   </script>
