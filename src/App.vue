@@ -3,7 +3,7 @@
     <TodoHeader></TodoHeader>
     <TodoInput></TodoInput>
     <TodoList></TodoList>
-    <TodoFooter></TodoFooter>
+    <TodoFooter ></TodoFooter>
   </div>
 </template>
 
@@ -15,11 +15,10 @@ import TodoFooter from "./components/TodoFooter.vue";
 
 export default {
   components: {
-    // 컴포넌트 태그명(todo-header 권장) : 컴포넌트 내용 (TodoHeader 권장)
-    TodoHeader: TodoHeader,
-    TodoInput: TodoInput,
-    TodoList: TodoList,
-    TodoFooter: TodoFooter
+    TodoHeader,
+    TodoInput,
+    TodoList,
+    TodoFooter
   }
 }
 </script>
