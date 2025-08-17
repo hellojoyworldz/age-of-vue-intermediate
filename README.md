@@ -256,8 +256,6 @@ methods:{
         this.$store.dispatch('delayedAddCounter')
     }
 }
-
-
 ```
 
 ```javascript
@@ -287,3 +285,180 @@ methods:{
 - 언제 어느 컴포넌트에서 해당 state를 호출하고 변경했는지 확인이 어려움
 - state 값의 변화를 추적하기 어렵기 때문에 mutations 속성에는 동기 처리 로직만 넣어야 한다
   ![이미지](./readme-img/%EC%8A%A4%ED%81%AC%EB%A6%B0%EC%83%B7%202023-06-10%20%EC%98%A4%ED%9B%84%208.42.10.png)
+
+## 각 속성들을 더 쉽게 사용하는 방법 - Helper
+
+Store에 있는 아래 4가지 속성들을 간편하게 코딩하는 방법
+
+- state -> mapState
+- getters -> mapGetters
+- mutations -> mapMutations
+- actions -> mapActions
+
+### helper 사용법
+
+```javascript
+// App.vue
+import { mapState, mapGetters, mapMutations, apActions } from 'vuex'
+
+export default{
+    computed(){
+        ...mapState(['num']),...mapGetters(['countedNum'])
+    },
+    methods:{
+        ...mapMutations(['clickBtn']), ...mapActions(['asyncClickBtn'])
+    }
+}
+
+```
+
+### ES6 Object Spread Operator
+
+```javascript
+let josh = {
+  field: "web",
+  language: "js",
+};
+
+let developer = {
+  mation: "korea",
+  ...josh, //여러개의 속성들을 뿌려서 집어넣는다.
+};
+
+console.log(developer);
+```
+
+### mapState
+
+```javascript
+// App.vue
+import { mapState } from 'vuex'
+
+export default{
+    computed(){
+        ...mapState(['num'])
+        // num(){ return this.$store.state.num}
+    }
+}
+
+//store.js
+state:{
+    num: 10
+}
+
+```
+
+```html
+<!--
+<p>{{ this.$store.state.num }}</p>
+-->
+<p>{{ this.num }}</p>
+```
+
+### mapGetters
+
+- vuex에 선언한 getters속성을 뷰 컴포넌트에 더 쉽게 연결해주는 헬퍼
+
+```javascript
+// App.vue
+import { mapGetters } from 'vuex'
+
+export default{
+    computed(){
+        ...mapGEtters(['reverseMessage'])
+        // num(){ return this.$store.state.num}
+    }
+}
+
+//store.js
+getters:{
+    reverseMessage(state){
+        return state.msg.split('').reverse().join('')
+    }
+}
+
+```
+
+```html
+<!--
+<p>{{ this.$store.getters.reverseMessage }}</p>
+-->
+<p>{{ this.reverseMessage }}</p>
+```
+
+### mapMutations
+
+- vuex에 선언한 mutations속성을 뷰 컴포넌트에 더 쉽게 연결해주는 헬퍼
+
+```javascript
+// App.vue
+import { mapMutations } from 'vuex'
+
+export default{
+    methods:{
+        ...mapMutations(['clickBtn']),
+        authLogin(){},
+        displayTable(){}
+    }
+}
+
+//store.js
+mutations:{
+    clickBtn(state){
+        alert(state.msg)
+    }
+}
+
+```
+
+```html
+<button @click="clickBtn">popup message</button>
+```
+
+### mapActions
+
+- vuex에 선언한 mapActions속성을 뷰 컴포넌트에 더 쉽게 연결해주는 헬퍼
+
+```javascript
+// App.vue
+import { mapActions } from 'vuex'
+
+export default{
+    methods:{
+        ...mapActions(['delayClickBtn']),
+    }
+}
+
+//store.js
+actions:{
+    delayClickBtn(context){
+        setTimeout(()=>context.commit('clickBtn'),2000)
+    }
+}
+
+```
+
+```html
+<button @click="delayClickBtn">delay popup message</button>
+```
+
+### 헬퍼의 유연한 문법
+
+- Vuex에 선언한 속성을 그대로 컴포넌트에 연결하는 문법
+
+```javascript
+// 배열 리터럴
+...mapMutations([
+    'clickBnt', // 'clickBnt': clickBnt
+    'addNumber' // addNumber(인자)
+])
+```
+
+- Vuex에 선언한 속성을 컴포넌트의 특정 메서드에다가 연결하는 문법
+
+```javascript
+// 객체 리터럴
+...mapMutations({
+    popupMsg: 'clickBtn' // 컴포넌트 메서드 명 : Store의 뮤테이션 명
+})
+```
